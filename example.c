@@ -39,15 +39,15 @@ int main(void) {
 	assert(strcmp(p1.key, "Hello") == 0);
 	assert(strcmp(p2.key, "Goodbye") == 0);
 
-	// We can resize the vector too.
+	// We can resize the vector.
 	vec_pair_resize(v, 4, (Pair) {":3", "!"});
 
 	assert(vec_pair_size(v) == 4);
 	assert(strcmp(vec_pair_get(v, 2).key, ":3") == 0);
 	assert(strcmp(vec_pair_get(v, 3).value, "!") == 0);
 
-	// The third argument here is ignored, because we're truncating the vector.
-	vec_pair_resize(v, 0, (Pair) {"", ""});
+	// We can clear the vector.
+	vec_pair_clear(v);
 	assert(vec_pair_size(v) == 0);
 
 	// Remember to delete the vectors! Memory is allocated dynamically.

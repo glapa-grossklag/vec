@@ -130,6 +130,12 @@ VEC_FUNCTION(resize) (VEC_T() *v, size_t s, TYPE x) {
     v->size = s;
 }
 
+static inline
+void
+VEC_FUNCTION(clear) (VEC_T() *v) {
+    v->size = 0;
+}
+
 // We don't want to pollute the namespace.
 #undef VEC_FUNCTION
 #undef VEC_FUNCTION_HELPER

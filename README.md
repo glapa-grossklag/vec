@@ -87,3 +87,9 @@ less than the current size, the vector is truncated.
 ```c
 void vec_int_resize(vec_int_t *, size_t, int x);
 ```
+
+To clear everything in a vector, there is `vec_int_clear()`.
+
+```c
+void vec_int_clear(vec_int_t *);
+```
