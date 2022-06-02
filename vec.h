@@ -95,11 +95,6 @@ static inline
 TYPE
 VEC_FUNCTION(pop) (VEC_T() *v) {
     assert(v->size > 0);
-    if (v->size < v->capacity / 2) {
-        v->capacity /= 2;
-        assert((v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements))));
-    }
-
     v->size -= 1;
     return v->elements[v->size];
 }
