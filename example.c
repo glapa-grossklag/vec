@@ -6,26 +6,35 @@
 typedef struct {
 	char *key;
 	char *value;
-} pair;
+} Pair;
 
-// Note how we define the type of the vector. Multiple vectors of different
-// types are possible as well -- simply include the file twice!
-#define TYPE pair
+// The type of the vector is defined using `#define TYPE foo`.
+#define TYPE Pair
+
+// The name of the vector (i.e., what you see in the name of all functions)
+// is defined using `#define NAME foo`. This is necessary when TYPE contains
+// multiple tokens. By default, `NAME` is `TYPE`. For example:
+//
+// #define TYPE struct foo
+// #define NAME foo
+#define NAME pair
+
 #include "vec.h"
 #undef TYPE
+#undef NAME
 
 int main(void) {
-	// A new struct is defined, `struct vec_pair`, for a vector of pairs.
+	// A new type is defined, `vec_pair_t`, for a vector of pairs.
 	// Similarly, all functions become `vec_pair_new` or `vec_pair_push`.
-	struct vec_pair *v = vec_pair_new();
+	vec_pair_t *v = vec_pair_new();
 
 	// We can push things to the end of the vector.
-	vec_pair_push(v, (pair) {"Hello", "world!"});
-	vec_pair_push(v, (pair) {"Goodbye", "world!"});
+	vec_pair_push(v, (Pair) {"Hello", "world!"});
+	vec_pair_push(v, (Pair) {"Goodbye", "world!"});
 
 	// Let's make sure we have the right pairs at the right indices.
-	pair p1 = vec_pair_get(v, 0);
-	pair p2 = vec_pair_get(v, 1);
+	Pair p1 = vec_pair_get(v, 0);
+	Pair p2 = vec_pair_get(v, 1);
 
 	assert(strcmp(p1.key, "Hello") == 0);
 	assert(strcmp(p2.key, "Goodbye") == 0);
