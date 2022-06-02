@@ -21,33 +21,44 @@
 #include <assert.h>
 #include <stdbool.h>
 
+// Configuration --------------------------------------------------------------
+
 #ifndef TYPE
 #error "TYPE must be defined"
 #endif
 
 #ifndef NAME
 #define NAME TYPE
+
+// NAME wasn't defined before, so it shouldn't pollute the namespace. We'll
+// undefine it later.
+#define UNDEF_NAME_LATER
 #endif
 
-#define CONCATENATE3(a, b, c) a ## b ## c
+// Macros ---------------------------------------------------------------------
+
 #define CONCATENATE4(a, b, c, d) a ## b ## c ## d
 
-#define VEC_FUNCTION_HELPER(N, F) CONCATENATE4(vec_, N, _, F)
-#define VEC_FUNCTION(F) VEC_FUNCTION_HELPER(NAME, F)
+// SUFFIX allows easier combining of tokens. E.g., if `NAME` was defined as
+// `int`, then `SUFFIX(combobulate)` would evaluate to `vec_int_combobulate`.
+#define SUFFIX_HELPER(S, N) CONCATENATE4(vec_, N, _, S)
+#define SUFFIX(S) SUFFIX_HELPER(S, NAME)
 
-#define VEC_T_HELPER(N) CONCATENATE3(vec_, N, _t)
-#define VEC_T() VEC_T_HELPER(NAME)
+// Implementation -------------------------------------------------------------
+
+#define VEC() SUFFIX(t)
+#define FUNCTION(S) SUFFIX(S)
 
 typedef struct {
     size_t size;
     size_t capacity;
     TYPE *elements;
-} VEC_T();
+} VEC();
 
 static inline
-VEC_T() *
-VEC_FUNCTION(new) (void) {
-    VEC_T() *v = malloc(sizeof(*v));
+VEC() *
+FUNCTION(new) (void) {
+    VEC() *v = malloc(sizeof(*v));
 
     v->size = 0;
     v->capacity = 1;
@@ -58,14 +69,14 @@ VEC_FUNCTION(new) (void) {
 
 static inline
 void
-VEC_FUNCTION(delete) (VEC_T() *v) {
+FUNCTION(delete) (VEC() *v) {
     free(v->elements);
     free(v);
 }
 
 static inline
 TYPE
-VEC_FUNCTION(get) (VEC_T() *v, size_t i) {
+FUNCTION(get) (VEC() *v, size_t i) {
     assert(i < v->size);
 
     return v->elements[i];
@@ -73,7 +84,7 @@ VEC_FUNCTION(get) (VEC_T() *v, size_t i) {
 
 static inline
 void
-VEC_FUNCTION(set) (VEC_T() *v, size_t i, TYPE x) {
+FUNCTION(set) (VEC() *v, size_t i, TYPE x) {
     assert(i < v->size);
 
     v->elements[i] = x;
@@ -81,7 +92,7 @@ VEC_FUNCTION(set) (VEC_T() *v, size_t i, TYPE x) {
 
 static inline
 void
-VEC_FUNCTION(push) (VEC_T() *v, TYPE x) {
+FUNCTION(push) (VEC() *v, TYPE x) {
     if (v->size == v->capacity) {
         v->capacity *= 2;
         assert((v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements))));
@@ -93,7 +104,7 @@ VEC_FUNCTION(push) (VEC_T() *v, TYPE x) {
 
 static inline
 TYPE
-VEC_FUNCTION(pop) (VEC_T() *v) {
+FUNCTION(pop) (VEC() *v) {
     assert(v->size > 0);
     v->size -= 1;
     return v->elements[v->size];
@@ -101,19 +112,19 @@ VEC_FUNCTION(pop) (VEC_T() *v) {
 
 static inline
 size_t
-VEC_FUNCTION(size) (VEC_T() *v) {
+FUNCTION(size) (VEC() *v) {
     return v->size;
 }
 
 static inline
 bool
-VEC_FUNCTION(is_empty) (VEC_T() *v) {
+FUNCTION(is_empty) (VEC() *v) {
     return v->size == 0;
 }
 
 static inline
 void
-VEC_FUNCTION(resize) (VEC_T() *v, size_t s, TYPE x) {
+FUNCTION(resize) (VEC() *v, size_t s, TYPE x) {
     if (s > v->capacity) {
         v->capacity = s;
         assert((v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements))));
@@ -127,14 +138,18 @@ VEC_FUNCTION(resize) (VEC_T() *v, size_t s, TYPE x) {
 
 static inline
 void
-VEC_FUNCTION(clear) (VEC_T() *v) {
+FUNCTION(clear) (VEC() *v) {
     v->size = 0;
 }
 
-// We don't want to pollute the namespace.
-#undef VEC_FUNCTION
-#undef VEC_FUNCTION_HELPER
-#undef VEC_T
-#undef VEC_T_HELPER
+// Cleanup --------------------------------------------------------------------
+
+#undef FUNCTION
+#undef VEC
+#undef SUFFIX
+#undef SUFFIX_HELPER
 #undef CONCATENATE4
-#undef CONCATENATE3
+
+#ifdef UNDEF_NAME_LATER
+#undef NAME
+#endif
