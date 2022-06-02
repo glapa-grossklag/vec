@@ -73,3 +73,9 @@ To retrieve the number of elements in the vector, there is `vec_int_size()`.
 ```c
 size_t vec_int_size(vec_int_t *);
 ```
+
+To determine if a vector is empty, there is `vec_int_is_empty()`.
+
+```c
+bool vec_int_is_empty(vec_int_t *);
+```

@@ -19,6 +19,7 @@
 
 #include <stdlib.h>
 #include <assert.h>
+#include <stdbool.h>
 
 #ifndef TYPE
 #error "TYPE must be defined"
@@ -107,6 +108,12 @@ static inline
 size_t
 VEC_FUNCTION(size) (VEC_T() *v) {
     return v->size;
+}
+
+static inline
+bool
+VEC_FUNCTION(is_empty) (VEC_T() *v) {
+    return v->size == 0;
 }
 
 // We don't want to pollute the namespace.
