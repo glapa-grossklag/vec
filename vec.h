@@ -116,6 +116,20 @@ VEC_FUNCTION(is_empty) (VEC_T() *v) {
     return v->size == 0;
 }
 
+static inline
+void
+VEC_FUNCTION(resize) (VEC_T() *v, size_t s, TYPE x) {
+    if (s > v->capacity) {
+        v->capacity = s;
+        assert((v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements))));
+    }
+
+    for (size_t i = v->size; i < s; i += 1) {
+        v->elements[i] = x;
+    }
+    v->size = s;
+}
+
 // We don't want to pollute the namespace.
 #undef VEC_FUNCTION
 #undef VEC_FUNCTION_HELPER

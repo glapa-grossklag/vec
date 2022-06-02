@@ -79,3 +79,11 @@ To determine if a vector is empty, there is `vec_int_is_empty()`.
 ```c
 bool vec_int_is_empty(vec_int_t *);
 ```
+
+To resize a vector, there is `vec_int_resize()`. If the new size is greater
+than the current size, each new slot is filled with `x`. If the new size if
+less than the current size, the vector is truncated.
+
+```c
+void vec_int_resize(vec_int_t *, size_t, int x);
+```
