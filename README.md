@@ -46,6 +46,15 @@ vec_int_t *vec_int_new(void);
 void vec_int_delete(vec_int_t *);
 ```
 
+A more specialized version of `new` is available, `vec_int_with_capacity`, to
+create vectors with a given capacity (*not* a given size). This allows you to
+use knowledge you may have about the future size of a vector to minimize memory
+allocations.
+
+```c
+vec_int_t *vec_int_with_capacity(size_t);
+```
+
 To push and pop elements from a vector, there are `vec_int_push()` and
 `vec_int_pop()`. Popping will fail an assertion if there are no elements in
 the vector, so it's the caller's responsibility to ensure the vector is
@@ -82,13 +91,13 @@ bool vec_int_is_empty(vec_int_t *);
 
 To resize a vector, there is `vec_int_resize()`. If the new size is greater
 than the current size, each new slot is filled with `x`. If the new size if
-less than the current size, the vector is truncated.
+less than the current size, the vector is truncated and `x` is not used.
 
 ```c
 void vec_int_resize(vec_int_t *, size_t, int x);
 ```
 
-To clear everything in a vector, there is `vec_int_clear()`.
+To clear everything in a vector, there is `vec_int_clear()`. This is done in constant time.
 
 ```c
 void vec_int_clear(vec_int_t *);

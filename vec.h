@@ -68,6 +68,18 @@ FUNCTION(new) (void) {
 }
 
 static inline
+VEC() *
+FUNCTION(with_capacity) (size_t capacity) {
+    VEC() *v = malloc(sizeof(*v));
+
+    v->size = 0;
+    v->capacity = capacity;
+    v->elements = malloc(sizeof(*v->elements) * capacity);
+
+    return v;
+}
+
+static inline
 void
 FUNCTION(delete) (VEC() *v) {
     free(v->elements);
