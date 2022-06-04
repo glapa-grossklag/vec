@@ -36,13 +36,7 @@ void test_string(void) {
 #undef NAME
 
 void test_int(void) {
-	vec_int_t *v = vec_int_new();
-
-	vec_int_push(v, 3);
-	vec_int_push(v, 1);
-	vec_int_push(v, 4);
-	vec_int_push(v, 1);
-	vec_int_push(v, 5);
+	vec_int_t *v = vec_int_from((int[]) {3, 1, 4, 1, 5}, 5);
 
 	assert(vec_int_contains(v, 1));
 	assert(vec_int_contains(v, 5));

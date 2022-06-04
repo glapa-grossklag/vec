@@ -97,6 +97,19 @@ FUNCTION(with_capacity) (size_t capacity) {
 }
 
 static inline
+VEC() *
+FUNCTION(from) (TYPE *a, size_t n) {
+    VEC() *v = FUNCTION(with_capacity)(n);
+
+    v->size = n;
+    for (size_t i = 0; i < n; i += 1) {
+        v->elements[i] = a[i];
+    }
+
+    return v;
+}
+
+static inline
 void
 FUNCTION(delete) (VEC() *v) {
     free(v->elements);
@@ -123,7 +136,7 @@ static inline
 void
 FUNCTION(push) (VEC() *v, TYPE x) {
     if (v->size == v->capacity) {
-        v->capacity *= 2;
+        v->capacity = v->capacity == 0 ? 1 : v->capacity * 2;
         v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements));
         assert(v->elements);
     }

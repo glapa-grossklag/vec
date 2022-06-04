@@ -65,6 +65,13 @@ vec_int_t *vec_int_new(void);
 void vec_int_delete(vec_int_t *);
 ```
 
+If you want to create a new vector from the first `n` elements of an existing
+array, there is `vec_int_from()`.
+
+```c
+vec_int_t *vec_int_from(int *, size_t n);
+```
+
 A more specialized version of `new` is available, `vec_int_with_capacity`, to
 create vectors with a given capacity (*not* a given size). This allows you to
 use knowledge you may have about the future size of a vector to minimize memory
