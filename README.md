@@ -18,6 +18,17 @@ A silly, generic, vector for C.
 // TYPE. This is necessary if TYPE could not be used in an identifier, for
 // example `struct foo` or `char *`.
 #define NAME int
+
+typedef struct {
+	char *key;
+	char *value;
+} Pair;
+
+// The macro used to determine equality of members of a vector.
+//
+// NOTE: This is built-in for all integral types (e.g., `int`, `size_t`).
+// Likewise, this is built-in for `char *`s using `strcmp`.
+#define IS_EQUAL(a, b) ((a).key == (b).key && (a).value == (b).value)
 ```
 
 One can `#include` multiple times, creating multiple vector types.
@@ -32,6 +43,14 @@ One can `#include` multiple times, creating multiple vector types.
 #include "vec.h"
 #undef TYPE
 #undef NAME
+
+#define TYPE Pair
+#define NAME pair
+#define IS_EQUAL(a, b) ((a).key == (b).key && (a).value == (b).value)
+#include "vec.h"
+#undef TYPE
+#undef NAME
+#undef IS_EQUAL
 ```
 
 # Documentation
@@ -97,8 +116,18 @@ less than the current size, the vector is truncated and `x` is not used.
 void vec_int_resize(vec_int_t *, size_t, int x);
 ```
 
-To clear everything in a vector, there is `vec_int_clear()`. This is done in constant time.
+To clear everything in a vector, there is `vec_int_clear()`. This is done in
+constant time.
 
 ```c
 void vec_int_clear(vec_int_t *);
+```
+
+To determine if a vector contains an element, there is `vec_int_contains
+()`. This relies on `IS_EQUAL` (see configuration), and is supported for
+`char *`s and anything that can be compared with `==`. You're free to redefine
+equality for user-defined types.
+
+```c
+void vec_int_contains(vec_int_t *, int);
 ```

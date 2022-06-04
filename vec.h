@@ -17,9 +17,10 @@
 * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 
-#include <stdlib.h>
 #include <assert.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 // Configuration --------------------------------------------------------------
 
@@ -33,6 +34,18 @@
 // NAME wasn't defined before, so it shouldn't pollute the namespace. We'll
 // undefine it later.
 #define UNDEF_NAME_LATER
+#endif
+
+#ifndef IS_EQUAL
+
+// By default, `char *`s are compared using `strcmp` and everything else by
+// `==`.
+#define IS_EQUAL(a, b) _Generic((b),                    \
+    char *:  (strcmp((char *) (a), (char *) (b)) == 0), \
+    default: ((a) == (b))                               \
+)
+
+#define UNDEF_IS_EQUAL_LATER
 #endif
 
 // Macros ---------------------------------------------------------------------
@@ -161,6 +174,26 @@ FUNCTION(clear) (VEC() *v) {
     v->size = 0;
 }
 
+static inline
+bool
+FUNCTION(contains) (VEC() *v, TYPE x) {
+    // These diagnostics have to be temporarily disabled because the
+    // `_Generic` macro isn't perfect at type-checking. Trust me, it'll
+    // be okay! :)
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wint-to-pointer-cast"
+
+    for (size_t i = 0; i < v->size; i += 1) {
+        if (IS_EQUAL(x, v->elements[i])) {
+            return true;
+        }
+    }
+
+    return false;
+    #pragma GCC diagnostic pop
+}
+
+
 // Cleanup --------------------------------------------------------------------
 
 #undef FUNCTION
@@ -171,4 +204,8 @@ FUNCTION(clear) (VEC() *v) {
 
 #ifdef UNDEF_NAME_LATER
 #undef NAME
+#endif
+
+#ifdef UNDEF_IS_EQUAL_LATER
+#undef IS_EQUAL
 #endif
