@@ -193,7 +193,6 @@ FUNCTION(contains) (VEC() *v, TYPE x) {
     #pragma GCC diagnostic pop
 }
 
-
 // Cleanup --------------------------------------------------------------------
 
 #undef FUNCTION
