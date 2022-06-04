@@ -59,10 +59,12 @@ static inline
 VEC() *
 FUNCTION(new) (void) {
     VEC() *v = malloc(sizeof(*v));
+    assert(v);
 
     v->size = 0;
     v->capacity = 1;
     v->elements = malloc(sizeof(*v->elements));
+    assert(v->elements);
 
     return v;
 }
@@ -71,10 +73,12 @@ static inline
 VEC() *
 FUNCTION(with_capacity) (size_t capacity) {
     VEC() *v = malloc(sizeof(*v));
+    assert(v);
 
     v->size = 0;
     v->capacity = capacity;
     v->elements = malloc(sizeof(*v->elements) * capacity);
+    assert(v->elements);
 
     return v;
 }
