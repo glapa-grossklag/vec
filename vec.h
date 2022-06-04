@@ -77,7 +77,7 @@ FUNCTION(with_capacity) (size_t capacity) {
 
     v->size = 0;
     v->capacity = capacity;
-    v->elements = malloc(sizeof(*v->elements) * capacity);
+    v->elements = malloc(capacity * sizeof(*v->elements));
     assert(v->elements);
 
     return v;
@@ -111,7 +111,8 @@ void
 FUNCTION(push) (VEC() *v, TYPE x) {
     if (v->size == v->capacity) {
         v->capacity *= 2;
-        assert((v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements))));
+        v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements));
+        assert(v->elements);
     }
 
     v->elements[v->size] = x;
@@ -143,12 +144,14 @@ void
 FUNCTION(resize) (VEC() *v, size_t s, TYPE x) {
     if (s > v->capacity) {
         v->capacity = s;
-        assert((v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements))));
+        v->elements = realloc(v->elements, v->capacity * sizeof(*v->elements));
+        assert(v->elements);
     }
 
     for (size_t i = v->size; i < s; i += 1) {
         v->elements[i] = x;
     }
+
     v->size = s;
 }
 
