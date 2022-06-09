@@ -142,7 +142,7 @@ The function [`vec_foo_resize`](#resize) changes the size of `v` to `s`. If the 
 ## `clear`
 
 ```c
-void vec_foo_clear(vec_foo_t *v;
+void vec_foo_clear(vec_foo_t *v);
 ```
 
 The function [`vec_foo_clear`](#clear) removes every element in `v`. This is done in constant time.
@@ -150,7 +150,7 @@ The function [`vec_foo_clear`](#clear) removes every element in `v`. This is don
 ## `contains`
 
 ```c
-void vec_int_contains(vec_int_t *, int);
+void vec_foo_contains(vec_foo_t *v, foo x);
 ```
 
 The function [`vec_foo_contains`](#contains) returns `true` if `v` contains `x`, `false` otherwise.
