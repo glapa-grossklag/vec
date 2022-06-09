@@ -206,6 +206,16 @@ FUNCTION(contains) (VEC() *v, TYPE x) {
     #pragma GCC diagnostic pop
 }
 
+static inline
+VEC() *
+FUNCTION(copy) (VEC() *v) {
+    VEC() *u = FUNCTION(with_capacity)(v->capacity);
+    u->size = v->size;
+    for (size_t i = 0; i < v->size; i += 1) {
+        u->elements[i] = v->elements[i];
+    }
+    return u;
+}
 // Cleanup --------------------------------------------------------------------
 
 #undef FUNCTION

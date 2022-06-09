@@ -156,3 +156,11 @@ void vec_foo_contains(vec_foo_t *v, foo x);
 The function [`vec_foo_contains`](#contains) returns `true` if `v` contains `x`, `false` otherwise.
 
 This relies on [`IS_EQUAL`](#is_equal), and thus is built-in for anything that can be compared using the `==` operator, as well `char *`s using `strcmp`.
+
+## `copy`
+
+```c
+void vec_foo_copy(vec_foo_t *v);
+```
+
+The function [`vec_foo_copy`](#copy) returns a shallow copy of `v`.
