@@ -57,7 +57,7 @@ Note, all the documentation below assumes [`TYPE`](#type) as been defined as `fo
 vec_foo_t *vec_foo_new(void);
 ```
 
-The function [`vec_foo_new()`](#new) dynamically creates and returns a pointer to a `vec_foo_t`. The caller is reponsible for freeing memory using [`vec_foo_delete()`](#delete).
+The function [`vec_foo_new()`](#new) dynamically creates and returns a pointer to a `vec_foo_t`. The caller is reponsible for freeing memory using [`vec_foo_delete()`](#delete). If memory cannot be allocated, `NULL` is returned.
 
 ## `delete`
 
@@ -81,7 +81,7 @@ The function [`vec_foo_from()`](#from) dynamically creates and returns a pointer
 vec_foo_t *vec_foo_with_capacity(size_t n);
 ```
 
-The function [`vec_foo_with_capacity()`](#with_capacity) dynamically creates and returns a pointer to a `vec_foo_t` with the capacity to hold `n`. This allows you to use knowledge you may have about the future size of a vector to minimize memory allocations. The caller is reponsible for freeing memory using [`vec_foo_delete()`](#delete).
+The function [`vec_foo_with_capacity()`](#with_capacity) dynamically creates and returns a pointer to a `vec_foo_t` with the capacity to hold `n`. This allows you to use knowledge you may have about the future size of a vector to minimize memory allocations. The caller is reponsible for freeing memory using [`vec_foo_delete()`](#delete). If memory cannot be allocated, `NULL` is returned.
 
 ## `push`
 
