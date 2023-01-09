@@ -70,25 +70,6 @@ typedef struct {
 
 static inline
 VEC() *
-FUNCTION(new) (void) {
-    VEC() *v = malloc(sizeof(*v));
-	if (!v) {
-		return NULL;
-	}
-
-    v->size = 0;
-    v->capacity = 1;
-    v->elements = malloc(sizeof(*v->elements));
-	if (!v->elements) {
-		free(v);
-		return NULL;
-	}
-
-    return v;
-}
-
-static inline
-VEC() *
 FUNCTION(with_capacity) (size_t capacity) {
     VEC() *v = malloc(sizeof(*v));
 	if (!v) {
@@ -104,6 +85,13 @@ FUNCTION(with_capacity) (size_t capacity) {
 	}
 
     return v;
+}
+
+static inline
+VEC() *
+FUNCTION(new) (void) {
+	// By default, a capacity of 64 is used.
+    return FUNCTION(with_capacity)(64);
 }
 
 static inline
@@ -223,29 +211,6 @@ FUNCTION(copy) (VEC() *v) {
     u->size = v->size;
     for (size_t i = 0; i < v->size; i += 1) {
         u->elements[i] = v->elements[i];
-    }
-    return u;
-}
-
-static inline
-VEC() *
-FUNCTION(map) (VEC() *v, TYPE (*f)(TYPE)) {
-    VEC() *u = FUNCTION(with_capacity)(v->size);
-    u->size = v->size;
-    for (size_t i = 0; i < v->size; i += 1) {
-        u->elements[i] = f(v->elements[i]);
-    }
-    return u;
-}
-
-static inline
-VEC() *
-FUNCTION(filter) (VEC() *v, bool (*f)(TYPE)) {
-    VEC() *u = FUNCTION(with_capacity)(v->size);
-    for (size_t i = 0; i < v->size; i += 1) {
-        if (f(v->elements[i])) {
-            FUNCTION(push)(u, v->elements[i]);
-        }
     }
     return u;
 }
